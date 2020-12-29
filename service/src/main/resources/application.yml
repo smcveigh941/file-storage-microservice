@@ -1,0 +1,13 @@
+server:
+  port: ${SERVICE_PORT:6000}
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: ${JDBC_URL}
+    username: ${SERVICE_DB_USER}
+    password: ${SERVICE_DB_USER_PASSWORD}
+  servlet:
+    multipart:
+      max-file-size: 1MB
+  jpa:
+    open-in-view: false
