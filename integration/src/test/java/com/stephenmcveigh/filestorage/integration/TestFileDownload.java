@@ -36,4 +36,17 @@ class TestFileDownload {
         .statusCode(200)
         .contentType("image/png");
   }
+
+  @Test
+  void testThrows404WhenFileDoesNotExist() throws IOException {
+    file = FileHelper.makeFile(ONE_KB);
+    String fileId = RequestHelper.createFileUploadRequest(file)
+        .post(RequestHelper.getUrl(POST_FILE_ENDPOINT))
+        .getBody().asString();
+
+    RequestHelper.createRequest()
+        .get(RequestHelper.getUrl(String.format(GET_FILE_ENDPOINT, Integer.parseInt(fileId) + 1)))
+        .then()
+        .statusCode(404);
+  }
 }

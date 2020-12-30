@@ -1,0 +1,15 @@
+version: '3.4'
+services:
+  file-storage-microservice:
+    container_name: file-storage-microservice
+    build:
+      context: ..
+      dockerfile: configuration/Dockerfile
+    environment:
+      SERVICE_PORT: ${SERVICE_PORT}
+      JDBC_URL: ${JDBC_URL}
+      SERVICE_DB_USER: ${SERVICE_DB_USER}
+      SERVICE_DB_USER_PASSWORD: ${SERVICE_DB_USER_PASSWORD}
+    ports:
+    - ${SERVICE_PORT}:${SERVICE_PORT}
+    network_mode: host
