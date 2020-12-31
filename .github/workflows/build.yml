@@ -1,0 +1,65 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch:
+
+env:
+  JDBC_URL: jdbc:mysql://${{ secrets.DB_HOST }}:3306/${{ secrets.DB_NAME }}
+  ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
+  SERVICE_DB_USER: ${{ secrets.SERVICE_DB_USER }}
+  SERVICE_DB_USER_PASSWORD: ${{ secrets.SERVICE_DB_USER_PASSWORD }}
+  SERVICE_PORT: ${{ secrets.SERVICE_PORT }}
+  FILE_STORAGE_SERVICE_URL: http://localhost:${{ secrets.SERVICE_PORT }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0.22
+        env:
+          MYSQL_ROOT_HOST: ${{ secrets.DB_HOST }}
+          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+          MYSQL_USER: ${{ secrets.SERVICE_DB_USER }}
+          MYSQL_PASSWORD: ${{ secrets.SERVICE_DB_USER_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.ROOT_PASSWORD }}
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysql --host ${MYSQL_ROOT_HOST} --port 3306 -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e 'SELECT 1'" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11.0.4
+
+      - name: Compile
+        run: |
+          cd service
+          mvn package -Dmaven.test.skip=true
+
+      - name: Unit tests
+        run: |
+          cd service
+          mvn test
+
+      - name: Populate database
+        run: |
+          cd configuration
+          ./migrate.sh
+
+      - name: Deploy Springboot service
+        run: |
+          cd configuration
+          docker-compose -p filestorageservice up --build -d
+
+      - name: Run integration tests
+        run: |
+          cd integration
+          mvn clean verify
