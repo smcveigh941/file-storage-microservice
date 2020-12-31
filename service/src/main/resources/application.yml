@@ -11,3 +11,17 @@ spring:
       max-file-size: 1MB
   jpa:
     open-in-view: false
+management:
+  endpoint:
+    health:
+      show-details: NEVER
+  endpoints:
+    web:
+      exposure:
+        include: health
+      base-path: /admin
+      path-mapping:
+        health: health-check
+  health:
+    defaults:
+      enabled: false

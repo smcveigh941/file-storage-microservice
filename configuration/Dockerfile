@@ -1,7 +1,10 @@
 FROM openjdk:11-jre-slim
 
-RUN mkdir -p /usr/src/file-storage-microservice
-WORKDIR /usr/src/file-storage-microservice
+RUN adduser --system --group --home /opt/app appuser
 
-COPY service/target/*.jar /usr/src/file-storage-microservice/app.jar
-ENTRYPOINT ["java","-jar","/usr/src/file-storage-microservice/app.jar"]
+ARG JAR_FILE=service/target/*.jar
+COPY --chown=appuser:appuser ${JAR_FILE} /opt/app/application.jar
+
+USER appuser
+WORKDIR /opt/app
+ENTRYPOINT ["java", "-jar", "/opt/app/application.jar"]
