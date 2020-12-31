@@ -2,6 +2,7 @@ package com.stephenmcveigh.filestorage.integration;
 
 import com.stephenmcveigh.filestorage.integration.helper.FileHelper;
 import com.stephenmcveigh.filestorage.integration.helper.RequestHelper;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ class TestFileDownload {
     RequestHelper.createRequest()
         .get(RequestHelper.getUrl(String.format(GET_FILE_ENDPOINT, fileId)))
         .then()
-        .statusCode(200)
+        .statusCode(HttpStatus.SC_OK)
         .contentType("image/png");
   }
 
@@ -47,6 +48,6 @@ class TestFileDownload {
     RequestHelper.createRequest()
         .get(RequestHelper.getUrl(String.format(GET_FILE_ENDPOINT, Integer.parseInt(fileId) + 1)))
         .then()
-        .statusCode(404);
+        .statusCode(HttpStatus.SC_NOT_FOUND);
   }
 }
