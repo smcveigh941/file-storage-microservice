@@ -1,6 +1,5 @@
 package com.stephenmcveigh.filestorage.exception;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -42,7 +41,8 @@ class GlobalExceptionHandlerTest {
     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     assertNotNull(response.getBody());
     assertEquals(1, response.getBody().size());
-    assertEquals("The selected file must be smaller than 1MB", response.getBody().get("errorMessage"));
+    assertEquals("The selected file must be smaller than 1MB",
+        response.getBody().get("errorMessage"));
   }
 
 }
