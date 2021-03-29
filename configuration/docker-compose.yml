@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   file-storage-microservice:
-    container_name: file-storage-microservice
+    container_name: racing-api
     build:
       context: ..
       dockerfile: configuration/Dockerfile

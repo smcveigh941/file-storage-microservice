@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.stephenmcveigh</groupId>
-  <artifactId>file-storage-configuration</artifactId>
+  <artifactId>racing-api-configuration</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

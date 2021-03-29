@@ -10,9 +10,9 @@
     <relativePath/>
   </parent>
   <groupId>com.stephenmcveigh</groupId>
-  <artifactId>file-storage-microservice</artifactId>
+  <artifactId>racing-api</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <name>file-storage</name>
+  <name>racing-api</name>
 
   <properties>
     <java.version>11</java.version>
